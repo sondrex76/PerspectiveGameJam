@@ -99309,7 +99309,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -99333,19 +99333,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   cameraElement: {fileID: 519420031}
+  gravityScale: 0.8
   movementSpeed: 2
   runningSpeed: 2.5
-  moveAcceleration: 2
-  runAcceleration: 2.5
+  moveAcceleration: 10
+  runAcceleration: 15
   minSize: 1
-  maxSize: 21
+  maxSize: 12
   minZoom: 1
   sizeSpeed: 1
-  jumpHeight: 1
-  minSizeModifier: 4.582576
+  jumpHeight: 4
+  minSizeModifier: 4
   maxSizeModifier: 1
-  minCameraSize: 5
-  maxCameraSize: 50
+  minCameraSize: 7
+  maxCameraSize: 70
 --- !u!70 &1898886148
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

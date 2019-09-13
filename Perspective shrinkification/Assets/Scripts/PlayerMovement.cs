@@ -10,10 +10,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     Camera cameraElement;           // Camera(for perspective changes)
     // Serialized values
-    [Range(1, 20)]
+    [SerializeField]
+    float gravityScale = 0.8f;              // Gravity multiplier
     [SerializeField]
     float movementSpeed = 10.0f;            // Movement speed
-    [Range(2, 30)]
     [SerializeField]
     float runningSpeed = 12.0f;             // Runnning speed
     [SerializeField]
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float minSize = 1.0f;
     [SerializeField]
-    float maxSize = 21.0f;
+    float maxSize = 12.0f;
     [SerializeField]
     float minZoom = 1.0f;
     [SerializeField]
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     bool isRunning = false;         // Bool for running
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
     float currentSize = 1.0f;       // Current player size
-    float currentSizeGoal = 10.0f;   // Currnet size goal
+    float currentSizeGoal = 1.0f;   // Currnet size goal
 
     // Start is called before the first frame update
     void Start()
@@ -62,8 +62,7 @@ public class PlayerMovement : MonoBehaviour
         float sizeModifier = (currentSize - minSize) / (maxSize - minSize);
         // Sets the modifier to its actual value
         sizeModifier = sizeModifier * maxSizeModifier * maxSize + (1 - sizeModifier) * minSizeModifier * minSize;
-
-
+        
         // Actual functions
         UpdateMovement(sizeModifier);   // Updates movement
         UpdateSize();                   // Updates size
@@ -75,8 +74,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 currentVelocity = playerCollision.velocity; // Gets current velocity
 
         // Checks if character is currently running
-        isRunning = Input.GetKey(KeyCode.W);
-
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+        
         // Ensures speed cannot go over current max
         float currentAcceleration = sizeModifier, currentMaxSpeed = sizeModifier;
         if (isRunning)
@@ -141,6 +140,11 @@ public class PlayerMovement : MonoBehaviour
     // Updates size
     void UpdateSize()
     {
+        if (Input.GetKey(KeyCode.M))    // TEMP
+        {
+            currentSizeGoal = maxSize;
+        }
+
         if (currentSize < currentSizeGoal)
         {
             ChangeSize(currentSizeGoal);
@@ -170,9 +174,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.localScale = new Vector3(currentSize, currentSize, currentSize);
-
-        float sizeValue = minCameraSize + ((currentSize - minSize) / (maxSize - minSize)) * (maxCameraSize - minCameraSize);
-        Debug.Log(sizeValue);
-        cameraElement.orthographicSize = sizeValue;
+        playerCollision.gravityScale = currentSize * gravityScale;
+        
+        // Sets the camera's size
+        cameraElement.orthographicSize = minCameraSize + ((currentSize - minSize) / (maxSize - minSize)) * (maxCameraSize - minCameraSize);
     }
 }
