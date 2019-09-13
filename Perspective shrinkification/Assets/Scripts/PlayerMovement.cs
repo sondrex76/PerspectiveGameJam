@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Public variables
+    public LayerMask groundLayer;
+
     // Serialized values
     [Range(1, 20)]
     [SerializeField]
@@ -56,11 +59,11 @@ public class PlayerMovement : MonoBehaviour
 
 
         // Actual functions
-        updateMovement(sizeModifier);   // Updates movement
+        UpdateMovement(sizeModifier);   // Updates movement
     }
 
     // Detects key presses related to mvoement and acts on them
-    void updateMovement(float sizeModifier)
+    void UpdateMovement(float sizeModifier)
     {
         Vector2 currentVelocity = playerCollision.velocity; // Gets current velocity
 
@@ -68,18 +71,19 @@ public class PlayerMovement : MonoBehaviour
         isRunning = Input.GetKey(KeyCode.W);
 
         // Ensures speed cannot go over current max
-        float currentAcceleration, currentMaxSpeed;
+        float currentAcceleration = sizeModifier, currentMaxSpeed = sizeModifier;
         if (isRunning)
         {
-            currentAcceleration = runAcceleration;
-            currentMaxSpeed = runningSpeed;
+            currentAcceleration *= runAcceleration;
+            currentMaxSpeed *= runningSpeed;
         }
         else
         {
-            currentAcceleration = moveAcceleration;
-            currentMaxSpeed = movementSpeed;
+            currentAcceleration *= moveAcceleration;
+            currentMaxSpeed *= movementSpeed;
         }
         
+        // Actual movement
         if (Input.GetKey(KeyCode.A))                                    // Left
         {
             // Ensures the speed does not go over max
@@ -115,7 +119,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))     // Jump
         {
-
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, groundLayer);
+            if (hit.collider != null)
+            {
+                currentVelocity.y = jumpHeight * sizeModifier;
+            }
         }
         goDown = Input.GetKey(KeyCode.S);                               // Down(grapple-hook, if added)
 
@@ -125,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     // Changes size to the specfied value
-    bool changeSize(float newSize)
+    bool ChangeSize(float newSize)
     {
         bool isCorrectSize = false;
 
