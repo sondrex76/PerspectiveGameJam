@@ -99046,7 +99046,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 2.5, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1898886145}
@@ -99332,6 +99332,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  cameraElement: {fileID: 519420031}
   movementSpeed: 2
   runningSpeed: 2.5
   moveAcceleration: 2
@@ -99343,6 +99344,8 @@ MonoBehaviour:
   jumpHeight: 1
   minSizeModifier: 4.582576
   maxSizeModifier: 1
+  minCameraSize: 5
+  maxCameraSize: 50
 --- !u!70 &1898886148
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

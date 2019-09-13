@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     // Public variables
     public LayerMask groundLayer;
 
+    [SerializeField]
+    Camera cameraElement;           // Camera(for perspective changes)
     // Serialized values
     [Range(1, 20)]
     [SerializeField]
@@ -32,13 +34,17 @@ public class PlayerMovement : MonoBehaviour
     float minSizeModifier = 4.58257569496f; // When at min size speed and jump height are both multiplied with this in addition to the size modifier
     [SerializeField]
     float maxSizeModifier = 1.0f;           // When at max size speed and jump height are both multiplied with this in addition to the size modifier
+    [SerializeField]
+    float minCameraSize = 5.0f;            // Minimum camera size
+    [SerializeField]
+    float maxCameraSize = 50.0f;             // Maximum camera size
 
     // Private values
     Rigidbody2D playerCollision;    // Player collission
-    Camera cameraElement;           // Camera(for perspective changes)
     bool isRunning = false;         // Bool for running
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
     float currentSize = 1.0f;       // Current player size
+    float currentSizeGoal = 10.0f;   // Currnet size goal
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         // Cursor.visible = false;
         // Cursor.lockState = CursorLockMode.Locked;
         playerCollision = GetComponent<Rigidbody2D>();  // Gets the player's rigidbody for velocity
-        cameraElement = GetComponent<Camera>();
+        cameraElement.orthographicSize = minCameraSize;
     }
 
     // Update is called once per frame
@@ -60,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Actual functions
         UpdateMovement(sizeModifier);   // Updates movement
+        UpdateSize();                   // Updates size
     }
 
     // Detects key presses related to mvoement and acts on them
@@ -119,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))     // Jump
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, groundLayer);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, currentSize * 0.55f, groundLayer);
             if (hit.collider != null)
             {
                 currentVelocity.y = jumpHeight * sizeModifier;
@@ -131,28 +138,41 @@ public class PlayerMovement : MonoBehaviour
         playerCollision.velocity = currentVelocity;
     }
 
+    // Updates size
+    void UpdateSize()
+    {
+        if (currentSize < currentSizeGoal)
+        {
+            ChangeSize(currentSizeGoal);
+        }
+    }
 
     // Changes size to the specfied value
-    bool ChangeSize(float newSize)
+    void ChangeSize(float newSize)
     {
-        bool isCorrectSize = false;
-
         if (currentSize < newSize)
         {                           // Increase size
             if (currentSize + sizeSpeed * Time.deltaTime > maxSize)
             {
                 currentSize = maxSize;
-                isCorrectSize = true;
             }
+            else
+                currentSize += sizeSpeed * Time.deltaTime;
         }
         else
         {                           // Decrease size
             if (currentSize - sizeSpeed * Time.deltaTime < minSize)
             {
                 currentSize = minSize;
-                isCorrectSize = true;
             }
+            else
+                currentSize -= sizeSpeed * Time.deltaTime;
         }
-        return isCorrectSize;
+
+        transform.localScale = new Vector3(currentSize, currentSize, currentSize);
+
+        float sizeValue = minCameraSize + ((currentSize - minSize) / (maxSize - minSize)) * (maxCameraSize - minCameraSize);
+        Debug.Log(sizeValue);
+        cameraElement.orthographicSize = sizeValue;
     }
 }
