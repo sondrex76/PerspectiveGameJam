@@ -67,6 +67,13 @@ public class PlayerMovement : MonoBehaviour
             // Actual functions
             UpdateMovement(sizeMod);   // Updates movement
             UpdateSize();                   // Updates size
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!pauseMenu.returnPaused())  // Checks if the game is paused and does not run any game logic if it is
+        {
             CameraUpdate();
         }
     }
