@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        sizeMod = (currentSize - minSize) / (maxSize - minSize);
+        sizeMod = ReturnRelativeSizeMult();
         // Sets the modifier to its actual value
         sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
         
@@ -140,12 +140,16 @@ public class PlayerMovement : MonoBehaviour
     // Updates size
     void UpdateSize()
     {
-        if (Input.GetKey(KeyCode.M))    // TEMP
+        if (Input.GetKey(KeyCode.M))    // Set max size as the target
         {
             currentSizeGoal = maxSize;
         }
+        if (Input.GetKey(KeyCode.N))    // Set min size as the target
+        {
+            currentSizeGoal = minSize;
+        }
 
-        if (currentSize < currentSizeGoal)
+        if (currentSize != currentSizeGoal)
         {
             ChangeSize(currentSizeGoal);
         }
@@ -184,5 +188,11 @@ public class PlayerMovement : MonoBehaviour
     public float ReturnSizeMod()
     {
         return sizeMod;
+    }
+
+    // returns a value between 0 and 1 where 0 is min size and 1 is max
+    public float ReturnRelativeSizeMult()
+    {
+        return (currentSize - minSize) / (maxSize - minSize);
     }
 }
