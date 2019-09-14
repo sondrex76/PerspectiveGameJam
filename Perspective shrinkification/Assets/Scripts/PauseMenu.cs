@@ -27,15 +27,26 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKey(KeyCode.Escape) && hasStoppedEscaping)
         {
             pausedGame = !pausedGame;
-            pauseMenu.enabled = pausedGame;
             hasStoppedEscaping = false;
         }
         else if (Input.GetKeyUp(KeyCode.Escape))
             hasStoppedEscaping = true;              // Allows you to open/close the menu again
+        
+        pauseMenu.enabled = pausedGame;
     }
 
     public bool returnPaused()
     {
         return pausedGame;
+    }
+    public void QuitGame()
+    {
+        Application.Quit(); // Quits application
+    }
+
+    // Unpauses the game
+    public void ChangePaused(bool pause)
+    {
+        pausedGame = pause;
     }
 }
