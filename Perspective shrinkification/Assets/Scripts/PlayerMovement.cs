@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     PauseMenu pauseMenu;                    // Pause menu
     [SerializeField]
     Camera cameraElement;                   // Camera(for perspective changes)
+
     [SerializeField]
     float gravityScale = 0.8f;              // Gravity multiplier
     [SerializeField]
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
             // Actual functions
             UpdateMovement(sizeMod);   // Updates movement
             UpdateSize();                   // Updates size
+            CameraUpdate();
         }
     }
 
@@ -160,6 +162,13 @@ public class PlayerMovement : MonoBehaviour
         {
             ChangeSize(currentSizeGoal);
         }
+    }
+
+    void CameraUpdate()
+    {
+        // Causes stuttering horizontally
+        // I want it vertically but not horizontally
+        cameraElement.transform.position = new Vector3(playerCollision.transform.position.x, Mathf.Lerp(cameraElement.transform.position.y, playerCollision.transform.position.y, Time.deltaTime * jumpHeight * 2), -10.0f);
     }
 
     // Changes size to the specfied value
