@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // I really should have split this class into two or three
     // Serialized values
     [SerializeField]
     LayerMask groundLayer;                  // Ground
@@ -11,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     PauseMenu pauseMenu;                    // Pause menu
     [SerializeField]
     Camera cameraElement;                   // Camera(for perspective changes)
+    [SerializeField]
+    CapsuleCollider2D proxomityDetector;    // Collider detecting if the area is too small to grow more in
 
     [SerializeField]
     float gravityScale = 0.8f;              // Gravity multiplier
@@ -39,10 +42,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float maxCameraSize = 50.0f;             // Maximum camera size
 
+
+
     // Private values
     Rigidbody2D playerCollision;    // Player collission
     bool isRunning = false;         // Bool for running
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
+    bool canGrow = true;           // Bool identifying if there are neough space to grow
     float currentSize = 1.0f;       // Current player size
     float currentSizeGoal;          // Currnet size goal
     float sizeMod;                  // Current size modifier, decleared here to be returnable to other functions by a function
@@ -183,12 +189,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentSize < newSize)
         {                           // Increase size
-            if (currentSize + sizeSpeed * Time.deltaTime > maxSize)
+            if (canGrow)            // Are there enough space to grow?
             {
-                currentSize = maxSize;
+                if (currentSize + sizeSpeed * Time.deltaTime > maxSize)
+                {
+                    currentSize = maxSize;
+                }
+                else
+                    currentSize += sizeSpeed * Time.deltaTime;
             }
             else
-                currentSize += sizeSpeed * Time.deltaTime;
+                newSize = currentSize;
         }
         else
         {                           // Decrease size
@@ -217,5 +228,46 @@ public class PlayerMovement : MonoBehaviour
     public float ReturnRelativeSizeMult()
     {
         return (currentSize - minSize) / (maxSize - minSize);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))  // If colliding with ground
+        {
+
+            // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, currentSize * 0.55f, groundLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, currentSize * 0.4f, groundLayer);
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, currentSize * 0.4f, groundLayer);
+
+            if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") || 
+                hitLeft.collider != null && hitLeft.collider.gameObject.layer == LayerMask.NameToLayer("Ground")
+                && hitRight.collider != null && hitRight.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                canGrow = false;
+            }
+            
+            Debug.Log(hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") ||
+                hitLeft.collider != null && hitLeft.collider.gameObject.layer == LayerMask.NameToLayer("Ground")
+                && hitRight.collider != null && hitRight.collider.gameObject.layer == LayerMask.NameToLayer("Ground"));
+        }
+    }
+
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, currentSize * 0.55f, groundLayer);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, currentSize * 0.4f, groundLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, currentSize * 0.4f, groundLayer);
+
+        // If there are enough space to grow
+        if (hitLeft.collider == null ||
+             hitRight.collider == null &&
+             hit.collider == null
+             )
+        {
+            canGrow = true;
+        }
     }
 }

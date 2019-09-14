@@ -46,6 +46,9 @@ public class PlayerLight : MonoBehaviour
     [SerializeField]
     PlayerMovement playerMovementScript;
 
+    [SerializeField]
+    SpriteRenderer flashlightSprite;
+
     // Menu
     [SerializeField]
     PauseMenu pauseMenu;
@@ -71,9 +74,10 @@ public class PlayerLight : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))    // Turns light on/off if the "L" key is pressed
             FlashlightOn = !FlashlightOn;
 
+        flashlight.enabled = flashlightSprite.enabled = FlashlightOn;
+
         if (FlashlightOn)
         {
-            flashlight.enabled = true;
             // Currently only works for down
             float relSizeMult = playerMovementScript.ReturnRelativeSizeMult();
 
@@ -100,10 +104,6 @@ public class PlayerLight : MonoBehaviour
             }
 
             flashlight.transform.localPosition = flashlightCurrentPos;                                              // Updates position
-        }
-        else
-        {
-            flashlight.enabled = false;
         }
     }
 
