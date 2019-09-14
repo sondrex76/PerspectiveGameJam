@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1898886145}
+  pause: {fileID: 1625413293}
   spiderBody: {fileID: 13346018}
   sizeThresholdRun: 6
   sizeThresholdFollow: 3

@@ -7,6 +7,8 @@ public class Spider : MonoBehaviour
     [SerializeField]
     Transform player;                   // The player's field, to know the player's current size
     [SerializeField]
+    PauseMenu pause;                    // Pause menu
+    [SerializeField]
     Rigidbody2D spiderBody;             // The rigidbody of spider
     [SerializeField]
     float sizeThresholdRun;             // Threshold where the spider starts running away(above this value)
@@ -16,13 +18,12 @@ public class Spider : MonoBehaviour
     float spiderVelocity = 10.0f;       // Velocity of spider
     [SerializeField]
     float spiderAcceleration = 20.0f;   // Acceleration of spider
-    
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
+        spiderBody.simulated = !pause.returnPaused();   // Stops spider on pause
         
     }
-    // Why does this not fricking trigger when the player enters? I am so confused
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -58,7 +59,7 @@ public class Spider : MonoBehaviour
         {
             if (collision.gameObject.transform.localScale.x < sizeThresholdFollow)      // Player dies
             {
-
+                pause.EnableDeathScreen();   // pauses game
             }
             else if (collision.gameObject.transform.localScale.x > sizeThresholdRun)    // Spider dies
             {

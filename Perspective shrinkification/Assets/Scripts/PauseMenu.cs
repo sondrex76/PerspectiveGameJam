@@ -32,9 +32,12 @@ public class PauseMenu : MonoBehaviour
         {
             pausedGame = !pausedGame;
         }
-        
-        pauseMenu.enabled = pausedGame;
-        playerBody.simulated = !pausedGame;
+
+        if (!deathScreen.enabled) // If the death screen is not enabled
+        {
+            pauseMenu.enabled = pausedGame;
+            playerBody.simulated = !pausedGame;
+        }
     }
 
     public bool returnPaused()
@@ -50,6 +53,13 @@ public class PauseMenu : MonoBehaviour
     public void ChangePaused(bool pause)
     {
         pausedGame = pause;
+    }
+
+    public void EnableDeathScreen()
+    {
+        ChangePaused(true);
+        deathScreen.enabled = true;
+        playerBody.simulated = false;
     }
 
     public void loadScene(string scene)
