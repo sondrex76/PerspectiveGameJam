@@ -176,6 +176,7 @@ MonoBehaviour:
   offsetFlashlight: 1.2
   multOffsetFlashlight: 0
   minOffsetFlashlight: 0.6
+  modOffsetFlashlight: 1.2
   maxOffsetFlashlight: 3.4
   flashlight: {fileID: 1965555151}
   passiveLight: {fileID: 892074403}

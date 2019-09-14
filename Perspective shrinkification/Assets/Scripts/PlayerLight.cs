@@ -8,29 +8,31 @@ public class PlayerLight : MonoBehaviour
 
     // Floats
     [SerializeField]
-    float minPassiveLight = 0.1f;   // Light strength at min size
+    float minPassiveLight = 0.1f;       // Light strength at min size
     [SerializeField]
-    float maxPassiveLight = 0.5f;   // Light strength at max size
+    float maxPassiveLight = 0.5f;       // Light strength at max size
     [SerializeField]
     float minFlashLight;
     [SerializeField]
-    float minSpotlightRadius;       // Minimum spotlight radius
+    float minSpotlightRadius;           // Minimum spotlight radius
     [SerializeField]
-    float maxSpotlightRadius;       // Maximum spotlight radius
+    float maxSpotlightRadius;           // Maximum spotlight radius
     [SerializeField]
     float maxFlashLight;
     [SerializeField]
-    float flashLightRange;          // Base range of flashlight
+    float flashLightRange;              // Base range of flashlight
     [SerializeField]
-    float flashLightRangeMult;      // Multiplier of size the flashlight increases with
+    float flashLightRangeMult;          // Multiplier of size the flashlight increases with
     [SerializeField]
     float offsetFlashlight = 0.7f;
     [SerializeField]
-    float multOffsetFlashlight = -0.7f;
+    float multOffsetFlashlight = -0.7f; // 
     [SerializeField]
-    float minOffsetFlashlight;
+    float minOffsetFlashlight;          // Min offset of flash light
     [SerializeField]
-    float maxOffsetFlashlight;
+    float modOffsetFlashlight;          // Moderate offset of flash light
+    [SerializeField]
+    float maxOffsetFlashlight;          // Max offset of flash light
 
     // Lights
     [SerializeField]
@@ -48,6 +50,8 @@ public class PlayerLight : MonoBehaviour
     [SerializeField]
     PauseMenu pauseMenu;
 
+    // Local variables
+    bool FlashlightOn = true;
 
     // Functions
 
@@ -57,39 +61,50 @@ public class PlayerLight : MonoBehaviour
     {
         if (!pauseMenu.returnPaused())
         {
-            UpdateLghts();
+            UpdateLights();
         }
     }
 
     // Updates lights
-    void UpdateLghts()
+    void UpdateLights()
     {
-        // Currently only works for down
-        float relSizeMult = playerMovementScript.ReturnRelativeSizeMult();
-        
-        // Light intensity
-        passiveLight.intensity = minPassiveLight + (maxPassiveLight - minPassiveLight) * relSizeMult;       // Manages passive light intensity
-        flashlight.intensity = minFlashLight + (maxFlashLight - minFlashLight) * relSizeMult;               // Manages flashlight intensity
-        flashlight.spotAngle = minSpotlightRadius * (1 - relSizeMult) + maxSpotlightRadius * relSizeMult;   // Manages radius of flashlight
-        flashlight.range = flashLightRange * playerObject.localScale.x;                                     // Manages range of flashlight
+        if (Input.GetKeyDown(KeyCode.L))    // Turns light on/off if the "L" key is pressed
+            FlashlightOn = !FlashlightOn;
 
-        // Rotates light based on mouse position
-        flashlight.transform.parent.up = -returnDirectionMouse();
+        if (FlashlightOn)
+        {
+            flashlight.enabled = true;
+            // Currently only works for down
+            float relSizeMult = playerMovementScript.ReturnRelativeSizeMult();
 
-        // Corrects distance between player and light
-        Vector3 flashlightCurrentPos = new Vector3(0, 0, 0);
-        flashlightCurrentPos.y = minOffsetFlashlight * (1 - relSizeMult) + maxOffsetFlashlight * relSizeMult;
-        flashlight.transform.localPosition = flashlightCurrentPos;           // Updates position
+            // Light intensity
+            passiveLight.intensity = minPassiveLight + (maxPassiveLight - minPassiveLight) * relSizeMult;           // Manages passive light intensity
+            flashlight.intensity = minFlashLight + (maxFlashLight - minFlashLight) * relSizeMult;                   // Manages flashlight intensity
+            flashlight.spotAngle = minSpotlightRadius * (1 - relSizeMult) + maxSpotlightRadius * relSizeMult;       // Manages radius of flashlight
+            flashlight.range = flashLightRange * playerObject.localScale.x;                                         // Manages range of flashlight
 
-        // Needs to offset light based on size and make light able to be rotated around player
+            // Rotates light based on mouse position
+            flashlight.transform.parent.up = -returnDirectionMouse();
 
-        // Currently does not do anything
-        /*
-        Vector3 newPosition = new Vector3(0, 0, 0);
-        newPosition.y = offsetFlashlight + multOffsetFlashlight * (playerObject.localScale.x - 1.0f);
-        
-        flashlight.transform.localPosition = newPosition;
-        */
+            // Corrects distance between player and light
+            Vector3 flashlightCurrentPos = new Vector3(0, 0, 0);
+
+            // Interpolation between three values, looked for the formulas but looks like I will just have to use an if statement
+            if (relSizeMult > 0.5f)
+            {
+                flashlightCurrentPos.y = (modOffsetFlashlight * (1 - relSizeMult) + maxOffsetFlashlight * (relSizeMult - 0.5f)) * 2;
+            }
+            else
+            {
+                flashlightCurrentPos.y = (minOffsetFlashlight * (0.5f - relSizeMult) + modOffsetFlashlight * relSizeMult) * 2;
+            }
+
+            flashlight.transform.localPosition = flashlightCurrentPos;                                              // Updates position
+        }
+        else
+        {
+            flashlight.enabled = false;
+        }
     }
 
     // Returns the direction from the player to the mouse
