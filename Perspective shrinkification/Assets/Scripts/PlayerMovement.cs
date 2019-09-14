@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
     // Serialized values
     [SerializeField]
-    LayerMask groundLayer;   // Ground
+    LayerMask groundLayer;                  // Ground
     [SerializeField]
-    Camera cameraElement;           // Camera(for perspective changes)
+    PauseMenu pauseMenu;                    // Pause menu
+    [SerializeField]
+    Camera cameraElement;                   // Camera(for perspective changes)
     [SerializeField]
     float gravityScale = 0.8f;              // Gravity multiplier
     [SerializeField]
@@ -59,13 +61,16 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        sizeMod = ReturnRelativeSizeMult();
-        // Sets the modifier to its actual value
-        sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
-        
-        // Actual functions
-        UpdateMovement(sizeMod);   // Updates movement
-        UpdateSize();                   // Updates size
+        if (!pauseMenu.returnPaused())  // Checks if the game is paused and does not run any game logic if it is
+        {
+            sizeMod = ReturnRelativeSizeMult();
+            // Sets the modifier to its actual value
+            sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
+
+            // Actual functions
+            UpdateMovement(sizeMod);   // Updates movement
+            UpdateSize();                   // Updates size
+        }
     }
 
     // Detects key presses related to mvoement and acts on them
