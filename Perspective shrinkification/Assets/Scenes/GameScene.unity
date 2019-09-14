@@ -100328,12 +100328,11 @@ MonoBehaviour:
   runAcceleration: 15
   minSize: 1
   maxSize: 12
-  minZoom: 1
   sizeSpeed: 3
   jumpHeight: 4
   minSizeModifier: 4
   maxSizeModifier: 1
-  minCameraSize: 7
+  minCameraSize: 10
   maxCameraSize: 35
 --- !u!70 &1898886148
 CapsuleCollider2D:

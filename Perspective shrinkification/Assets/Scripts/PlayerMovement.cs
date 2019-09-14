@@ -22,13 +22,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float runAcceleration = 1.2f;           // Running acceleration
     [SerializeField]
-    float minSize = 1.0f;
+    float minSize = 1.0f;                   // Minimum size
     [SerializeField]
-    float maxSize = 12.0f;
+    float maxSize = 12.0f;                  // Maximum size
     [SerializeField]
-    float minZoom = 1.0f;
-    [SerializeField]
-    float sizeSpeed = 1.0f;
+    float sizeSpeed = 1.0f;                 // Speed of size changing
     [SerializeField]
     float jumpHeight = 1.0f;                // Jump height(speed given to jump at jump button
     [SerializeField]
@@ -45,17 +43,15 @@ public class PlayerMovement : MonoBehaviour
     bool isRunning = false;         // Bool for running
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
     float currentSize = 1.0f;       // Current player size
-    float currentSizeGoal = 1.0f;   // Currnet size goal
+    float currentSizeGoal;          // Currnet size goal
     float sizeMod;                  // Current size modifier, decleared here to be returnable to other functions by a function
 
     // Start is called before the first frame update
     void Start()
     {
-        // Hides and locks cursor(commented out because I might need the mouse pointer for things later
-        // Cursor.visible = false;
-        // Cursor.lockState = CursorLockMode.Locked;
         playerCollision = GetComponent<Rigidbody2D>();  // Gets the player's rigidbody for velocity
         cameraElement.orthographicSize = minCameraSize;
+        currentSizeGoal = minSize;
     }
 
     // Update is called once per frame
@@ -145,13 +141,19 @@ public class PlayerMovement : MonoBehaviour
     // Updates size
     void UpdateSize()
     {
-        if (Input.GetKey(KeyCode.M))    // Set max size as the target
+        if (Input.GetKeyDown(KeyCode.M))    // Set max size as the target
         {
-            currentSizeGoal = maxSize;
+            if (currentSizeGoal != maxSize)
+                currentSizeGoal = maxSize;
+            else
+                currentSizeGoal = currentSize;
         }
-        if (Input.GetKey(KeyCode.N))    // Set min size as the target
+        if (Input.GetKeyDown(KeyCode.N))    // Set min size as the target
         {
-            currentSizeGoal = minSize;
+            if (currentSizeGoal != minSize)
+                currentSizeGoal = minSize;
+            else
+                currentSizeGoal = currentSize;
         }
 
         if (currentSize != currentSizeGoal)
