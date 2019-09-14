@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))     // Jump
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))     // Jump
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, currentSize * 0.55f, groundLayer);
             if (hit.collider != null)
