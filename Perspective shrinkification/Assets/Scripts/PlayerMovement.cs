@@ -246,10 +246,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 canGrow = false;
             }
-            
-            Debug.Log(hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground") ||
-                hitLeft.collider != null && hitLeft.collider.gameObject.layer == LayerMask.NameToLayer("Ground")
-                && hitRight.collider != null && hitRight.collider.gameObject.layer == LayerMask.NameToLayer("Ground"));
         }
     }
 
