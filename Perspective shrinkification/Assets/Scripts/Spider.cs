@@ -23,9 +23,10 @@ public class Spider : MonoBehaviour
         
     }
     // Why does this not fricking trigger when the player enters? I am so confused
-    private void OnCollisionStay2D(Collision2D collision)
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))//collision.gameObject.tag == "Player")
         {
             Vector2 speedBase = (((Vector2)player.transform.position - (Vector2)transform.position).normalized);
 
@@ -43,7 +44,7 @@ public class Spider : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Player")
         {
