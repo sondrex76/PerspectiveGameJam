@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -8,18 +9,19 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     Canvas pauseMenu;
     [SerializeField]
+    Canvas deathScreen;
+    [SerializeField]
     float minWaitTime;
     [SerializeField]
     Rigidbody2D playerBody;
 
     // Private values
-    bool hasStoppedEscaping = true; // Bool to check if your escape click is a new one
     bool pausedGame = false;        // Is the game paused? 
 
     // Start is called before the first frame update
     void Start()
     {
-        pauseMenu.enabled = false;
+        pauseMenu.enabled = deathScreen.enabled = false;
     }
 
     // Update is called once per frame
@@ -29,10 +31,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))// && hasStoppedEscaping)
         {
             pausedGame = !pausedGame;
-            hasStoppedEscaping = false;
         }
-        else if (Input.GetKeyUp(KeyCode.Escape))
-            hasStoppedEscaping = true;              // Allows you to open/close the menu again
         
         pauseMenu.enabled = pausedGame;
         playerBody.simulated = !pausedGame;
@@ -51,5 +50,10 @@ public class PauseMenu : MonoBehaviour
     public void ChangePaused(bool pause)
     {
         pausedGame = pause;
+    }
+
+    public void loadScene(string scene)
+    {
+        SceneManager.LoadScene(scene);
     }
 }

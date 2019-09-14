@@ -37,18 +37,33 @@ public class Spider : MonoBehaviour
             {
                 spiderBody.velocity = speedBase * spiderVelocity;
             }
-            else if (player.transform.localScale.x > sizeThresholdRun)  // If it should run
+            else                                                        // If it should run
             {
                 spiderBody.velocity = -speedBase * spiderVelocity;
             }
         }
     }
-
+    
     private void OnTriggerExit2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Player")
         {
             spiderBody.velocity = new Vector2();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Player")
+        {
+            if (collision.gameObject.transform.localScale.x < sizeThresholdFollow)      // Player dies
+            {
+
+            }
+            else if (collision.gameObject.transform.localScale.x > sizeThresholdRun)    // Spider dies
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
