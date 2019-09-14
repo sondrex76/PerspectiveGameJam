@@ -7865,27 +7865,21 @@ MonoBehaviour:
     m_Bits: 256
   pauseMenu: {fileID: 1625413293}
   cameraElement: {fileID: 519420031}
-  proxomityDetector: {fileID: 1898886143}
   stepOverrshoot: 0.01
   stepHeight: 0.3
   gravityScale: 0.8
-  movementSpeed: 2
-  runningSpeed: 2.5
+  movementSpeed: 3
+  runningSpeed: 3.5
   moveAcceleration: 15
   runAcceleration: 20
   minSize: 1
   maxSize: 12
-  sizeSpeed: 3
-  jumpHeight: 4
-  minSizeModifier: 4
+  sizeSpeed: 3.5
+  jumpHeight: 5
+  minSizeModifier: 3
   maxSizeModifier: 1
   minCameraSize: 10
   maxCameraSize: 35
-  spiderBody: {fileID: 13346018}
-  sizeThresholdRun: 6
-  sizeThresholdFollow: 3
-  spiderVelocity: 10
-  spiderAcceleration: 20
 --- !u!70 &1898886148
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

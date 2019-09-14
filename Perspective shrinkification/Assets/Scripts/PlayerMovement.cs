@@ -12,9 +12,6 @@ public class PlayerMovement : MonoBehaviour
     PauseMenu pauseMenu;                    // Pause menu
     [SerializeField]
     Camera cameraElement;                   // Camera(for perspective changes)
-    [SerializeField]
-    CapsuleCollider2D proxomityDetector;    // Collider detecting if the area is too small to grow more in
-
 
     [SerializeField]
     float stepOverrshoot = 0.01f;           // How muhc to overshoot
