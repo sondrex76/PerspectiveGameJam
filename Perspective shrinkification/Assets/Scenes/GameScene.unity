@@ -167,8 +167,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minPassiveLight: 0.1
   maxPassiveLight: 0.8
-  minFlashLight: 0
-  maxFlashLight: 0
+  minFlashLight: 60
+  maxFlashLight: 20
+  flashLightRange: 30
+  flashLightRangeMult: 0.8
   offsetFlashlight: 1.2
   multOffsetFlashlight: 0
   flashlight: {fileID: 1965555151}

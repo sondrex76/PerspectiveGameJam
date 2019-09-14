@@ -16,6 +16,10 @@ public class PlayerLight : MonoBehaviour
     [SerializeField]
     float maxFlashLight;
     [SerializeField]
+    float flashLightRange;          // Base range of flashlight
+    [SerializeField]
+    float flashLightRangeMult;      // Multiplier of size the flashlight increases with
+    [SerializeField]
     float offsetFlashlight = 0.7f;
     [SerializeField]
     float multOffsetFlashlight = -0.7f;
@@ -48,6 +52,9 @@ public class PlayerLight : MonoBehaviour
 
         // Light intensity
         passiveLight.intensity = minPassiveLight + (maxPassiveLight - minPassiveLight) * playerMovementScript.ReturnRelativeSizeMult();
+        flashlight.intensity = minFlashLight + (maxFlashLight - minFlashLight) * playerMovementScript.ReturnRelativeSizeMult();
+        flashlight.range = flashLightRange * playerObject.localScale.x;
+
 
 
         // Currently does not do anything
