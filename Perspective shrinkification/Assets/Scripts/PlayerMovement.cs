@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Public variables
-    public LayerMask groundLayer;
-
+    // Serialized values
+    [SerializeField]
+    LayerMask groundLayer;   // Ground
     [SerializeField]
     Camera cameraElement;           // Camera(for perspective changes)
-    // Serialized values
     [SerializeField]
     float gravityScale = 0.8f;              // Gravity multiplier
     [SerializeField]
@@ -45,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
     float currentSize = 1.0f;       // Current player size
     float currentSizeGoal = 1.0f;   // Currnet size goal
+    float sizeMod;                  // Current size modifier, decleared here to be returnable to other functions by a function
 
     // Start is called before the first frame update
     void Start()
@@ -59,12 +59,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float sizeModifier = (currentSize - minSize) / (maxSize - minSize);
+        sizeMod = (currentSize - minSize) / (maxSize - minSize);
         // Sets the modifier to its actual value
-        sizeModifier = sizeModifier * maxSizeModifier * maxSize + (1 - sizeModifier) * minSizeModifier * minSize;
+        sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
         
         // Actual functions
-        UpdateMovement(sizeModifier);   // Updates movement
+        UpdateMovement(sizeMod);   // Updates movement
         UpdateSize();                   // Updates size
     }
 
@@ -178,5 +178,11 @@ public class PlayerMovement : MonoBehaviour
         
         // Sets the camera's size
         cameraElement.orthographicSize = minCameraSize + ((currentSize - minSize) / (maxSize - minSize)) * (maxCameraSize - minCameraSize);
+    }
+
+    // Returns size modifier
+    public float ReturnSizeMod()
+    {
+        return sizeMod;
     }
 }
