@@ -15,6 +15,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     CapsuleCollider2D proxomityDetector;    // Collider detecting if the area is too small to grow more in
 
+
+    [SerializeField]
+    float stepOverrshoot = 0.01f;           // How muhc to overshoot
+    [SerializeField]
+    float stepHeight = 0.3f;                // Step height           
     [SerializeField]
     float gravityScale = 0.8f;              // Gravity multiplier
     [SerializeField]
@@ -59,6 +64,12 @@ public class PlayerMovement : MonoBehaviour
         playerCollision = GetComponent<Rigidbody2D>();  // Gets the player's rigidbody for velocity
         cameraElement.orthographicSize = minCameraSize;
         currentSizeGoal = minSize;
+    }
+
+
+    private void FixedUpdate()
+    {
+        
     }
 
     // Update is called once per frame
@@ -174,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentSize != currentSizeGoal)
         {
             ChangeSize(currentSizeGoal);
+            playerCollision.mass = Mathf.Pow(playerCollision.transform.localScale.x, 3);
         }
     }
 
