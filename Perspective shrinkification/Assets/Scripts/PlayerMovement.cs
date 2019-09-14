@@ -199,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
                     currentSize += sizeSpeed * Time.deltaTime;
             }
             else
-                newSize = currentSize;
+                currentSizeGoal = currentSize;
         }
         else
         {                           // Decrease size
