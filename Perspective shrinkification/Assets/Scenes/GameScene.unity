@@ -99626,13 +99626,13 @@ MonoBehaviour:
 
     N: Decrease size
 
+    L: Activate/deactivate flashlight
+
     WASD + Space: standard movement
 
     Left shift: run
 
-    Point mouse: Flashlight
-
-    L: Activate/deactivate flashlight'
+    Point mouse: Flashlight'
 --- !u!222 &1211115928
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -100082,6 +100082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1625413291}
   minWaitTime: 0
+  playerBody: {fileID: 1898886146}
 --- !u!114 &1625413294
 MonoBehaviour:
   m_ObjectHideFlags: 0

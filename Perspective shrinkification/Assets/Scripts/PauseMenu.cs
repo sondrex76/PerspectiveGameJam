@@ -9,7 +9,9 @@ public class PauseMenu : MonoBehaviour
     Canvas pauseMenu;
     [SerializeField]
     float minWaitTime;
-    
+    [SerializeField]
+    Rigidbody2D playerBody;
+
     // Private values
     bool hasStoppedEscaping = true; // Bool to check if your escape click is a new one
     bool pausedGame = false;        // Is the game paused? 
@@ -33,6 +35,7 @@ public class PauseMenu : MonoBehaviour
             hasStoppedEscaping = true;              // Allows you to open/close the menu again
         
         pauseMenu.enabled = pausedGame;
+        playerBody.simulated = !pausedGame;
     }
 
     public bool returnPaused()
