@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collision
   - Enemy
+  - Ladder
   layers:
   - Default
   - TransparentFX
