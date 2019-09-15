@@ -43,8 +43,8 @@ public class Spider : MonoBehaviour
             }
         }
     }
-    
-    private void OnTriggerExit2D(Collision2D collision)
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.name == "Player")
         {
@@ -54,7 +54,7 @@ public class Spider : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Player" && spiderBody.velocity.y == 0)
+        if (collision.gameObject.name == "Player" && spiderBody.velocity.y < 0.01f)
         {
             if (collision.gameObject.transform.localScale.x < sizeThresholdFollow)      // Player dies
             {

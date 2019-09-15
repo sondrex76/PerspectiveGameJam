@@ -39395,7 +39395,7 @@ GameObject:
   - component: {fileID: 1449335711}
   m_Layer: 12
   m_Name: Slope
-  m_TagString: Untagged
+  m_TagString: Stairs
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39408,7 +39408,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1449335709}
   m_LocalRotation: {x: 0, y: 0, z: -0.22920047, w: 0.97337925}
-  m_LocalPosition: {x: -86, y: -102, z: 0}
+  m_LocalPosition: {x: -86, y: -101.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1932861508}
@@ -43381,5 +43381,15 @@ PrefabInstance:
       propertyPath: pause
       value: 
       objectReference: {fileID: 1625413293}
+    - target: {fileID: 5042382142976361993, guid: 4cbd1db3902e8d84bbda475360bbd11c,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042382142976361993, guid: 4cbd1db3902e8d84bbda475360bbd11c,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cbd1db3902e8d84bbda475360bbd11c, type: 3}

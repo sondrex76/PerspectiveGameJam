@@ -33,7 +33,7 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
         // Checks if you clicked escape and pauses/unpauses the game
-        if (Input.GetKeyDown(KeyCode.Escape))// && hasStoppedEscaping)
+        if (Input.GetKeyDown(KeyCode.Escape) && !deathScreen.enabled)// && hasStoppedEscaping)
         {
             ChangePaused(!pausedGame);
         }
