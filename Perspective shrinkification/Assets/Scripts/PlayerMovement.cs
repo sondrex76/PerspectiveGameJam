@@ -40,17 +40,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float maxSizeModifier = 1.0f;           // When at max size speed and jump height are both multiplied with this in addition to the size modifier
     [SerializeField]
-    float minCameraSize = 5.0f;            // Minimum camera size
+    float minCameraSize = 5.0f;             // Minimum camera size
     [SerializeField]
-    float maxCameraSize = 50.0f;             // Maximum camera size
-
+    float maxCameraSize = 50.0f;            // Maximum camera size
+    [SerializeField]
+    float ladderMin = 5.0f;                 // Minimum size to allow the player to move up ladders
+    [SerializeField]
+    float ladderSpeed = 1.0f;               // Ladder speed
+    [SerializeField]
+    float ladderAcceleration = 2.0f;        // Ladder speed
 
 
     // Private values
     Rigidbody2D playerCollision;    // Player collission
     bool isRunning = false;         // Bool for running
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
-    bool canGrow = true;           // Bool identifying if there are neough space to grow
+    bool canGrow = true;            // Bool identifying if there are neough space to grow
+    bool onLadder = false;          // Is on ladder
     float currentSize = 1.0f;       // Current player size
     float currentSizeGoal;          // Currnet size goal
     float sizeMod;                  // Current size modifier, decleared here to be returnable to other functions by a function
@@ -63,17 +69,36 @@ public class PlayerMovement : MonoBehaviour
         currentSizeGoal = minSize;
     }
 
-
-    private void FixedUpdate()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (!pauseMenu.returnPaused())  // Checks if the game is paused and does not run any game logic if it is
         {
+            if (onLadder)   // is on ladder
+            {
+                if (Input.GetKey(KeyCode.Space))    // If they are hitting space
+                {
+                    Vector2 currentVel = playerCollision.velocity;
+
+                    if (transform.localScale.x > ladderMin) // Move up ladder or stay still
+                    {
+
+                        if (currentVel.y + ladderSpeed * Time.deltaTime * transform.localScale.x > ladderSpeed * transform.localScale.x)
+                            currentVel.y = ladderSpeed * transform.localScale.x;
+                        else
+                            currentVel.y += ladderAcceleration * transform.localScale.x;
+
+                    }
+                    else
+                    {
+                        if (currentVel.y < 0)
+                            currentVel.y = 0;
+                    }
+
+                    playerCollision.velocity = currentVel;
+                }
+            }
+
             sizeMod = ReturnRelativeSizeMult();
             // Sets the modifier to its actual value
             sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
@@ -239,6 +264,21 @@ public class PlayerMovement : MonoBehaviour
         return (currentSize - minSize) / (maxSize - minSize);
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ladder"))   // If the object is a ladder
+        {
+            Debug.Log("here");
+            onLadder = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder")   // If the object is a ladder
+        {
+            onLadder = false;
+        }
+    }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))  // If colliding with ground
@@ -261,7 +301,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
+            // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, currentSize * 0.55f, groundLayer);
         RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, currentSize * 0.4f, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, currentSize * 0.4f, groundLayer);

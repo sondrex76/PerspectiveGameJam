@@ -22,7 +22,6 @@ public class Spider : MonoBehaviour
     private void Update()
     {
         spiderBody.simulated = !pause.returnPaused();   // Stops spider on pause
-        
     }
 
     private void OnTriggerStay2D(Collider2D collision)
