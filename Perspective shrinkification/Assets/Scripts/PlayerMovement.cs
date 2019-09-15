@@ -74,6 +74,12 @@ public class PlayerMovement : MonoBehaviour
         currentSizeGoal = minSize;
     }
 
+
+    private void FixedUpdate()
+    {
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Default"), LayerMask.NameToLayer("Ground"), playerCollision.velocity.y > 0.1);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -129,14 +135,12 @@ public class PlayerMovement : MonoBehaviour
 
     void checkStairs()
     {
-        if (onStair)    // Is on stairs
+        if (onStair && playerCollision.velocity.y > 0)    // Is on stairs
         {
             Vector2 currentVel = playerCollision.velocity;
 
             if (transform.localScale.x > stairsMin)
             {
-                Debug.Log(stairsPushingSpeed);
-
                 if (currentVel.y < stairsPushingSpeed)
                     currentVel.y = stairsPushingSpeed;
             }
@@ -296,18 +300,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ladder"))   // If the object is a ladder
             onLadder = true;
-        
-        if (collision.gameObject.tag == "Stairs")
-            onStair = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Stairs")
-        {
-            onStair = false;
-            playerCollision.velocity = new Vector2(playerCollision.velocity.x, 0);
-        }
-
         if (collision.gameObject.tag == "Ladder")   // If the object is a ladder
         {
             onLadder = false;
@@ -315,6 +310,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
+
+        if (collision.gameObject.tag == "Stairs")
+            onStair = true;
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))  // If colliding with ground
         {
 
@@ -335,7 +334,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-            // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
+        if (collision.gameObject.tag == "Stairs")
+            onStair = false;
+
+        // Checks if there are something closeby up or if tehre aren't enough space to the left and right to grow
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, currentSize * 0.55f, groundLayer);
         RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, currentSize * 0.4f, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, currentSize * 0.4f, groundLayer);
