@@ -22,6 +22,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pauseMenu.enabled = deathScreen.enabled = false;
+        pausedGame = !(PlayerPrefs.GetInt("FirstTime", 0) == 1);
     }
 
     // Update is called once per frame
@@ -38,6 +39,11 @@ public class PauseMenu : MonoBehaviour
             pauseMenu.enabled = pausedGame;
             playerBody.simulated = !pausedGame;
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.DeleteKey("FirstTime");
     }
 
     public bool returnPaused()
@@ -64,6 +70,7 @@ public class PauseMenu : MonoBehaviour
 
     public void loadScene(string scene)
     {
+        PlayerPrefs.SetInt("FirstTime", 1);
         SceneManager.LoadScene(scene);
     }
 }
