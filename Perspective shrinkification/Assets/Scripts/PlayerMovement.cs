@@ -57,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     bool goDown = false;            // bool to check if you want to go downwards(if features utilizing this is implemented)
     bool canGrow = true;            // Bool identifying if there are neough space to grow
     bool onLadder = false;          // Is on ladder
+    bool onStair = false;           // Is on stair
     float currentSize = 1.0f;       // Current player size
     float currentSizeGoal;          // Currnet size goal
     float sizeMod;                  // Current size modifier, decleared here to be returnable to other functions by a function
@@ -74,36 +75,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!pauseMenu.returnPaused())  // Checks if the game is paused and does not run any game logic if it is
         {
-            if (onLadder)   // is on ladder
-            {
-                if (Input.GetKey(KeyCode.Space))    // If they are hitting space
-                {
-                    Vector2 currentVel = playerCollision.velocity;
-
-                    if (transform.localScale.x > ladderMin) // Move up ladder or stay still
-                    {
-
-                        if (currentVel.y + ladderSpeed * Time.deltaTime * transform.localScale.x > ladderSpeed * transform.localScale.x)
-                            currentVel.y = ladderSpeed * transform.localScale.x;
-                        else
-                            currentVel.y += ladderAcceleration * transform.localScale.x;
-
-                    }
-                    else
-                    {
-                        if (currentVel.y < 0)
-                            currentVel.y = 0;
-                    }
-
-                    playerCollision.velocity = currentVel;
-                }
-            }
-
+            // Size modifier
             sizeMod = ReturnRelativeSizeMult();
-            // Sets the modifier to its actual value
             sizeMod = sizeMod * maxSizeModifier * maxSize + (1 - sizeMod) * minSizeModifier * minSize;
 
             // Actual functions
+            checkLadders(); // Checks for ladders and executes relevant code
+            checkStairs();  // Checks for stairs and executes relevant code
             UpdateMovement(sizeMod);   // Updates movement
             UpdateSize();                   // Updates size
         }
@@ -115,6 +93,39 @@ public class PlayerMovement : MonoBehaviour
         {
             CameraUpdate();
         }
+    }
+
+    void checkLadders()
+    {
+        if (onLadder)   // is on ladder
+        {
+            if (Input.GetKey(KeyCode.Space))    // If they are hitting space
+            {
+                Vector2 currentVel = playerCollision.velocity;
+
+                if (transform.localScale.x > ladderMin) // Move up ladder or stay still
+                {
+
+                    if (currentVel.y + ladderSpeed * Time.deltaTime * transform.localScale.x > ladderSpeed * transform.localScale.x)
+                        currentVel.y = ladderSpeed * transform.localScale.x;
+                    else
+                        currentVel.y += ladderAcceleration * transform.localScale.x;
+
+                }
+                else
+                {
+                    if (currentVel.y < 0)
+                        currentVel.y = 0;
+                }
+
+                playerCollision.velocity = currentVel;
+            }
+        }
+    }
+
+    void checkStairs()
+    {
+
     }
 
     // Detects key presses related to mvoement and acts on them
@@ -267,13 +278,16 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ladder"))   // If the object is a ladder
-        {
-            Debug.Log("here");
             onLadder = true;
-        }
+        
+        if (collision.gameObject.tag == "Stairs")
+            onStair = true;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Stairs")
+            onStair = false;
+
         if (collision.gameObject.tag == "Ladder")   // If the object is a ladder
         {
             onLadder = false;

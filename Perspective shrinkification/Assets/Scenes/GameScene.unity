@@ -41098,7 +41098,7 @@ GameObject:
   - component: {fileID: 1932861512}
   m_Layer: 8
   m_Name: BackgroundSmallStairs
-  m_TagString: Untagged
+  m_TagString: Stairs
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
