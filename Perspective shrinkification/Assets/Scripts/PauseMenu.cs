@@ -64,7 +64,10 @@ public class PauseMenu : MonoBehaviour
     {
         pausedGame = pause;
         if (!pause)
-            music.Play();
+        {
+            if (!music.isPlaying)  // Only start song if it is not already being played
+                music.Play();
+        }
         else
             music.Pause();
     }
