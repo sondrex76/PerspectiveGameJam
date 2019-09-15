@@ -54,7 +54,7 @@ public class Spider : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.gameObject.name == "Player" && spiderBody.velocity.y == 0)
         {
             if (collision.gameObject.transform.localScale.x < sizeThresholdFollow)      // Player dies
             {

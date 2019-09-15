@@ -108,7 +108,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 45, y: 6}
+  m_Size: {x: 50, y: 8}
   m_EdgeRadius: 0
 --- !u!61 &5042382142976362036
 BoxCollider2D:
@@ -174,5 +174,5 @@ MonoBehaviour:
   spiderBody: {fileID: 5042382142976361995}
   sizeThresholdRun: 6
   sizeThresholdFollow: 3
-  spiderVelocity: 10
+  spiderVelocity: 12
   spiderAcceleration: 15

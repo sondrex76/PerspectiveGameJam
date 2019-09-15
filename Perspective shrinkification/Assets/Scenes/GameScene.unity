@@ -41048,6 +41048,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  stairLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   pauseMenu: {fileID: 1625413293}
   cameraElement: {fileID: 519420031}
   stepOverrshoot: 0.01
@@ -41058,7 +41061,7 @@ MonoBehaviour:
   moveAcceleration: 15
   runAcceleration: 20
   minSize: 1
-  maxSize: 21
+  maxSize: 12
   sizeSpeed: 3.5
   jumpHeight: 5
   minSizeModifier: 3
@@ -41067,7 +41070,7 @@ MonoBehaviour:
   maxCameraSize: 35
   ladderMin: 5
   ladderSpeed: 3
-  ladderAcceleration: 20
+  ladderAcceleration: 10
   stairsPushingSpeed: 25
   stairsMin: 6
 --- !u!70 &1898886148
@@ -41098,7 +41101,7 @@ GameObject:
   - component: {fileID: 1932861511}
   - component: {fileID: 1932861510}
   - component: {fileID: 1932861512}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: BackgroundSmallStairs
   m_TagString: Stairs
   m_Icon: {fileID: 0}

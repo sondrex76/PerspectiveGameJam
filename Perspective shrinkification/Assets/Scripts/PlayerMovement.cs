@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     LayerMask groundLayer;                  // Ground
     [SerializeField]
+    LayerMask stairLayer;                  // Ground
+    [SerializeField]
     PauseMenu pauseMenu;                    // Pause menu
     [SerializeField]
     Camera cameraElement;                   // Camera(for perspective changes)
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Default"), LayerMask.NameToLayer("Ground"), playerCollision.velocity.y > 0.1);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Default"), LayerMask.NameToLayer("Stairs"), playerCollision.velocity.y > 0.5);
     }
 
     // Update is called once per frame
@@ -135,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
     void checkStairs()
     {
-        if (onStair && playerCollision.velocity.y > 0)    // Is on stairs
+        if (onStair && playerCollision.velocity.y > 0 && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))    // Is on stairs
         {
             Vector2 currentVel = playerCollision.velocity;
 
@@ -207,7 +209,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))     // Jump
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, currentSize * 0.55f, groundLayer);
-            if (hit.collider != null)
+            RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.down, currentSize * 0.55f, stairLayer);
+
+            if (hit.collider != null || hit2.collider != null)
             {
                 currentVelocity.y = jumpHeight * sizeModifier;
             }
