@@ -251,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Causes stuttering horizontally
         // I want it vertically but not horizontally
-        cameraElement.transform.position = new Vector3(playerCollision.transform.position.x, Mathf.Lerp(cameraElement.transform.position.y, playerCollision.transform.position.y, Time.deltaTime * jumpHeight * 2), -10.0f);
+        cameraElement.transform.position = new Vector3(playerCollision.transform.position.x, Mathf.Lerp(cameraElement.transform.position.y, playerCollision.transform.position.y, Time.deltaTime * jumpHeight * 2), -2.0f);
     }
 
     // Changes size to the specfied value
