@@ -14,6 +14,10 @@ public class PauseMenu : MonoBehaviour
     float minWaitTime;
     [SerializeField]
     Rigidbody2D playerBody;
+    [SerializeField]
+    AudioSource deathSound;
+    [SerializeField]
+    AudioSource music;
 
     // Private values
     bool pausedGame = false;        // Is the game paused? 
@@ -22,7 +26,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pauseMenu.enabled = deathScreen.enabled = false;
-        pausedGame = !(PlayerPrefs.GetInt("FirstTime", 0) == 1);
+        ChangePaused(!(PlayerPrefs.GetInt("FirstTime", 0) == 1));
     }
 
     // Update is called once per frame
@@ -31,7 +35,7 @@ public class PauseMenu : MonoBehaviour
         // Checks if you clicked escape and pauses/unpauses the game
         if (Input.GetKeyDown(KeyCode.Escape))// && hasStoppedEscaping)
         {
-            pausedGame = !pausedGame;
+            ChangePaused(!pausedGame);
         }
 
         if (!deathScreen.enabled) // If the death screen is not enabled
@@ -59,10 +63,15 @@ public class PauseMenu : MonoBehaviour
     public void ChangePaused(bool pause)
     {
         pausedGame = pause;
+        if (!pause)
+            music.Play();
+        else
+            music.Pause();
     }
 
     public void EnableDeathScreen()
     {
+        deathSound.Play();
         ChangePaused(true);
         deathScreen.enabled = true;
         playerBody.simulated = false;
