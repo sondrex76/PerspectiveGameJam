@@ -41058,7 +41058,7 @@ MonoBehaviour:
   moveAcceleration: 15
   runAcceleration: 20
   minSize: 1
-  maxSize: 12
+  maxSize: 21
   sizeSpeed: 3.5
   jumpHeight: 5
   minSizeModifier: 3
@@ -41067,7 +41067,9 @@ MonoBehaviour:
   maxCameraSize: 35
   ladderMin: 5
   ladderSpeed: 3
-  ladderAcceleration: 5
+  ladderAcceleration: 20
+  stairsPushingSpeed: 25
+  stairsMin: 6
 --- !u!70 &1898886148
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

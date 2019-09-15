@@ -49,6 +49,10 @@ public class PlayerMovement : MonoBehaviour
     float ladderSpeed = 1.0f;               // Ladder speed
     [SerializeField]
     float ladderAcceleration = 2.0f;        // Ladder speed
+    [SerializeField]
+    float stairsPushingSpeed = 8.0f;        // Speed stairs pushes character
+    [SerializeField]
+    float stairsMin = 8.0f;                 // Minimum size to allow the player to move up stairs
 
 
     // Private values
@@ -125,7 +129,20 @@ public class PlayerMovement : MonoBehaviour
 
     void checkStairs()
     {
+        if (onStair)    // Is on stairs
+        {
+            Vector2 currentVel = playerCollision.velocity;
 
+            if (transform.localScale.x > stairsMin)
+            {
+                Debug.Log(stairsPushingSpeed);
+
+                if (currentVel.y < stairsPushingSpeed)
+                    currentVel.y = stairsPushingSpeed;
+            }
+
+            playerCollision.velocity = currentVel;
+        }
     }
 
     // Detects key presses related to mvoement and acts on them
@@ -286,7 +303,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Stairs")
+        {
             onStair = false;
+            playerCollision.velocity = new Vector2(playerCollision.velocity.x, 0);
+        }
 
         if (collision.gameObject.tag == "Ladder")   // If the object is a ladder
         {
