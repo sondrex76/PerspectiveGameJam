@@ -26,13 +26,25 @@ public class Spider : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))//collision.gameObject.tag == "Player")
+        // So, somehow this returns true but not the other one
+
+        string thisIsTheTag = collision.gameObject.tag;
+
+        // BUG: does not trigger in certain circomstances(when you jump up at a certain distance and am still within the range)
+        if (collision.gameObject.CompareTag("Player"))
         {
             Vector2 speedBase = (((Vector2)player.transform.position - (Vector2)transform.position).normalized);
-
+            
             speedBase.y = 0;
             speedBase = speedBase.normalized;
-
+            
+            // -1, 0
+            // 1 < 3 = true
+            // Spider is definetly simulated
+            // Speed is updated
+            // The spider is not moving, reason: completely unknown
+            // Unevenground, probably
+            // Can't be that since it works the other way unless it somehow goes into the ground
             if (player.transform.localScale.x < sizeThresholdFollow)    // If it should attack
             {
                 spiderBody.velocity = speedBase * spiderVelocity;
@@ -52,13 +64,14 @@ public class Spider : MonoBehaviour
         }
     }
 
+    // Collides with spider
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Player" && spiderBody.velocity.y < 0.01f)
         {
             if (collision.gameObject.transform.localScale.x < sizeThresholdFollow)      // Player dies
             {
-                pause.EnableDeathScreen();   // pauses game
+                pause.EnableDeathScreen();
             }
             else if (collision.gameObject.transform.localScale.x > sizeThresholdRun)    // Spider dies
             {
